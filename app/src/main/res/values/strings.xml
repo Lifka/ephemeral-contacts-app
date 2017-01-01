@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Ephemeral Contacts</string>
+
+    <string name="menu_borrar">Borrar</string>
+    <string name="menu_aniade">Añadir</string>
 </resources>
