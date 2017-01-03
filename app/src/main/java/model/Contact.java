@@ -10,14 +10,16 @@ public class Contact {
 
     private Tag tag;
     private String name;
-    private int phone;
-    private Date expiration;
+    private String phone;
+    private String expiration;
+    private int days_expiration;
 
-    public Contact(Tag tag, String name, int phone, Date expiration){
+    public Contact(Tag tag, String name, String phone, String expiration, int days_expiration){
         this.tag = tag;
         this.name = name;
         this.phone = phone;
         this.expiration = expiration;
+        this.days_expiration = days_expiration;
     }
 
     public Tag getTag(){
@@ -32,11 +34,15 @@ public class Contact {
         return name;
     }
 
-    public int getPhone(){
+    public String getPhone(){
         return phone;
     }
 
-    public Date getExpiration(){
+    public String getExpiration(){
         return expiration;
+    }
+
+    public int getExpirationDays(){
+        return days_expiration;
     }
 }

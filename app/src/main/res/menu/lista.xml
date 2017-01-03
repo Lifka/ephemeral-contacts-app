@@ -4,24 +4,24 @@
 
 
     <item
-        android:id="@+id/spinner_tags"
+        android:id="@+id/menu_lista_spinner_tags"
         android:title="Tag"
         android:actionMenuTextAppearance="@color/cardview_light_background"
         app:actionViewClass="android.widget.Spinner"
-        app:showAsAction="always"   />
+        app:showAsAction="always"/>
 
 
     <item
-        android:id="@+id/menu_borrar"
+        android:id="@+id/menu_lista_borrar"
         android:title="@string/menu_borrar"
         app:showAsAction="always"
-        android:icon="@drawable/menu_trash" />
+        android:icon="@drawable/trash" />
 
-    <item
-        android:id="@+id/menu_aniade"
+    <!--item
+        android:id="@+id/menu_lista_aniade"
         android:title="@string/menu_aniade"
         app:showAsAction="always"
-        android:icon="@drawable/menu_add" />
+        android:icon="@drawable/menu_add" /-->
 
 
 

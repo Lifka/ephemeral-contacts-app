@@ -3,4 +3,24 @@
 
     <string name="menu_borrar">Borrar</string>
     <string name="menu_aniade">Añadir</string>
+
+
+    <string name="toast_manten_pulsado_info">Mantén pulsado un contacto para editarlo</string>
+    <string name="toast_guardado">Guardado correctamente</string>
+
+    <string name="spinner_tag1">Todos</string>
+
+    <string name="menu_save">Guardar</string>
+    <string name="menu_volver">Volver sin guardar</string>
+    <string name="menu_volver_normal">Volver</string>
+    <string name="menu_edit">Editar</string>
+
+
+    <string name="view_number">Número de teléfono</string>
+    <string name="view_name">Nombre</string>
+    <string name="view_tag">#TAG</string>
+    <string name="view_expiration">Caducidad en día(s):</string>
+    <string name="view_expiration_fecha">Caducidad:</string>
+
+    <string name="error_guardar">¡Tienes que rellenar todos los campos!</string>
 </resources>

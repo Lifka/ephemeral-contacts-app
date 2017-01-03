@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/menu_edit_volver"
+        android:title="@string/menu_volver_normal"
+        app:showAsAction="always"
+        android:icon="@drawable/back"/>
+
+    <item
+        android:id="@+id/menu_edit_guardar"
+        android:title="@string/menu_save"
+        app:showAsAction="always"
+        android:visible="false"
+        android:icon="@drawable/save" />
+
+
+    <item
+        android:id="@+id/menu_edit_edit"
+        android:title="@string/menu_edit"
+        app:showAsAction="always"
+        android:icon="@drawable/edit" />
+
+
+
+    <item
+        android:id="@+id/menu_edit_borrar"
+        android:title="@string/menu_borrar"
+        app:showAsAction="always"
+        android:icon="@drawable/trash" />
+
+
+
+</menu>
