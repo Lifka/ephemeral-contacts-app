@@ -2,6 +2,7 @@ package com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -52,6 +53,9 @@ public class SpinAdapterTag extends ArrayAdapter<Tag> {
     public View getDropDownView(int position, View convertView,
                                 ViewGroup parent) {
         TextView label = new TextView(context);
+        label.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
+        label.setBackgroundColor(ContextCompat.getColor(context, R.color.SpinColor));
+        label.setPadding(60,25,60,25);
         label.setText(tags.get(position).getTag());
 
         return label;

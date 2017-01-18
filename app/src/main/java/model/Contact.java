@@ -1,5 +1,7 @@
 package model;
 
+import android.util.Log;
+
 import java.util.Date;
 
 /**
@@ -8,6 +10,7 @@ import java.util.Date;
 
 public class Contact {
 
+    private int id = -1;
     private Tag tag;
     private String name;
     private String phone;
@@ -20,6 +23,7 @@ public class Contact {
         this.phone = phone;
         this.expiration = expiration;
         this.days_expiration = days_expiration;
+
     }
 
     public Tag getTag(){
@@ -44,5 +48,13 @@ public class Contact {
 
     public int getExpirationDays(){
         return days_expiration;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public int getId(){
+        return id;
     }
 }

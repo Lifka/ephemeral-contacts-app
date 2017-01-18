@@ -1,12 +1,18 @@
 <resources>
     <string name="app_name">Ephemeral Contacts</string>
 
+
+    <string name="contact_list_title">EphContacts</string>
+    <string name="tag_contacts">EC-</string>
+    <string name="separador_contacts">-</string>
+
     <string name="menu_borrar">Borrar</string>
     <string name="menu_aniade">Añadir</string>
 
 
     <string name="toast_manten_pulsado_info">Mantén pulsado un contacto para editarlo</string>
     <string name="toast_guardado">Guardado correctamente</string>
+    <string name="toast_error_guardado">Error, los cambios no se han podido guardar</string>
 
     <string name="spinner_tag1">Todos</string>
 
@@ -20,7 +26,8 @@
     <string name="view_name">Nombre</string>
     <string name="view_tag">#TAG</string>
     <string name="view_expiration">Caducidad en día(s):</string>
-    <string name="view_expiration_fecha">Caducidad:</string>
+    <string name="view_expiration_fecha">Fecha de caducidad:</string>
 
     <string name="error_guardar">¡Tienes que rellenar todos los campos!</string>
+    <string name="borrado">Contacto borrado</string>
 </resources>

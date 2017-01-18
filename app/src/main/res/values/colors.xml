@@ -7,5 +7,6 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorGrey">#eae9e9</color>
     <color name="Transparent">#000277bd</color>
+    <color name="SpinColor">#000000bd</color>
 
 </resources>

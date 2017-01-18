@@ -16,11 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import java.util.HashMap;
-
-import DB.DBManager;
 import model.Manager;
 import model.Tag;
 
@@ -36,6 +32,8 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contactlist);
+
+        setTitle(R.string.contact_list_title);
 
         spinner_tags = (Spinner)findViewById(R.id.menu_lista_spinner_tags);
 
@@ -60,6 +58,8 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
 
         // --------------------
 
+
+
     }
 
 
@@ -67,9 +67,8 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
 
         getMenuInflater().inflate(R.menu.lista, menu);
 
-        Manager.getInstancia().clearTags();
         Manager.getInstancia().load(this);
-        Manager.getInstancia().addTagView(new Tag(getResources().getString(R.string.spinner_tag1)));
+        Manager.getInstancia().loadTags();
 
         // Spinner -----------
         MenuItem item = menu.findItem(R.id.menu_lista_spinner_tags);
@@ -99,6 +98,7 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
             Manager.getInstancia().loadByTag(Manager.getInstancia().getTags().get(i/* - 1*/));
         }
 
+        adapter_list.notifyDataSetChanged();
 
     }
 
@@ -116,11 +116,11 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
 
         switch (view.getId()){
             case R.id.checkbox:
-                index = list.getChildLayoutPosition(view);
+                index = (int)view.getTag();
+                /*************/Log.d("[-------DEBUG-------]", "ContactList: OnClick: Seleccionado " + index);
                 CheckBox checkbox = (CheckBox)view.findViewById(R.id.checkbox);
 
-                boolean checked  = !checkbox.isChecked();
-                checkbox.setChecked(checked);
+                boolean checked  = checkbox.isChecked();
 
                 if (checked){
                     ((AdapterList)adapter_list).getIndexChecked().put(index, true);
@@ -167,8 +167,8 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
         switch (item.getItemId()) {
             case R.id.menu_lista_borrar:
 
+                /*************/Log.d("[-------DEBUG-------]", "ContactList: Menu: deleting...");
                 ((AdapterList)adapter_list).removeSelect();
-
                 return true;
         }
 
@@ -177,8 +177,9 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
 
     }
 
+
     private void editar(int i){
-        Intent intent = new Intent(this, ContactEdit.class);
+        Intent intent = new Intent(this, ContactView.class);
         intent.putExtra("INDEX", i);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);

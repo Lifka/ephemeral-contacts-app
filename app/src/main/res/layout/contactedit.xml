@@ -85,7 +85,7 @@
                     android:ems="1"
                     android:gravity="center"
                     android:textSize="40dp"
-                    android:maxLength="50"
+                    android:maxLength="18"
                     android:hint="@string/view_name"
                     android:textColorHint="@color/colorWhite"
                     android:padding="10dp"

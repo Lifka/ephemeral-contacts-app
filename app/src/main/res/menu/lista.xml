@@ -7,6 +7,7 @@
         android:id="@+id/menu_lista_spinner_tags"
         android:title="Tag"
         android:actionMenuTextAppearance="@color/cardview_light_background"
+        android:textColor="@color/colorWhite"
         app:actionViewClass="android.widget.Spinner"
         app:showAsAction="always"/>
 

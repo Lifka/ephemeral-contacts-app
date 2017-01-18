@@ -1,6 +1,7 @@
 package com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,10 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ContactViewHol
                 .inflate(R.layout.contact, parent, false);
         v.setOnClickListener(onclicklistener);
         v.setOnLongClickListener(onlonkclicklistener);
+
+        v.findViewById(R.id.checkbox).setOnClickListener(onclicklistener);
+        v.findViewById(R.id.checkbox).setTag(parent.getChildCount());
+
         return new ContactViewHolder(v);
     }
 
@@ -111,14 +116,19 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ContactViewHol
     public void removeSelect(){
 
         ArrayList<Contact> contacts = new ArrayList<>();
+        /*************/Log.d("[-------DEBUG-------]", "AdapterList: removeSelect: total a borrar=" + index_checked.size());
 
         for (int i : index_checked.keySet()){
+
+            /*************/Log.d("[-------DEBUG-------]", "AdapterList: removeSelect: " + i);
             contacts.add(Manager.getInstancia().getContacts().get(i));
             notifyItemRemoved(i);
         }
 
         index_checked.clear();
         Manager.getInstancia().removeContacts(contacts);
+        /*************/Log.d("[-------DEBUG-------]", "AdapterList: removeSelect: deleted");
+        notifyDataSetChanged();/***/
     }
 
 }
