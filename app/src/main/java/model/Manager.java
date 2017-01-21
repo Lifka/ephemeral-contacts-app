@@ -3,6 +3,7 @@ package model;
 import android.content.Context;
 import android.util.Log;
 
+import com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts.AdapterList;
 import com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts.R;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class Manager {
     private Context context;
     private Tag tag_saved = null;
     private int tag_saved_i = -1;
+    private AdapterList observer_list = null;
 
     private Manager(){
     }
@@ -94,7 +96,7 @@ public class Manager {
 
         if (result != -1){
             AlarmManagerHelper.getInstancia().addCaducidad(DateManager.getInstancia().getMilisecondsTo(new_contact.getExpiration()),
-                    Long.valueOf(new_contact.getPhone()), new_contact.getName());
+                    new_contact);
             contacts.add(new_contact);
         }
 
@@ -172,6 +174,8 @@ public class Manager {
     }
 
 
+
+
     public void removeContactsExpired(){
         /*************/Log.d("[-------DEBUG-------]", "Manager: removeContactsExpired: Comprobando contactos caducaos...");
         for(int i = 0; i < contacts.size(); i++){
@@ -179,6 +183,9 @@ public class Manager {
                 /*************/Log.e("[-------DEBUG-------]", "Manager: removeContactsExpired: El contacto " + contacts.get(i).getName() + " ha caducado (posición=" + i + ")");
                 removeContact(contacts.get(i));
                 i--;
+                if (observer_list != null) {
+                    observer_list.notifyDataSetChanged();
+                }
             } else {
                 /*************/Log.d("[-------DEBUG-------]", "Manager: removeContactsExpired: El contacto " + contacts.get(i).getName() + " NO ha caducado --> " + contacts.get(i).getExpiration());
             }
@@ -191,5 +198,8 @@ public class Manager {
 
     public void setTagSavedI(int i){
         this.tag_saved_i = i;
+    }
+    public void setObserverList(AdapterList observer){
+        this.observer_list = observer;
     }
 }

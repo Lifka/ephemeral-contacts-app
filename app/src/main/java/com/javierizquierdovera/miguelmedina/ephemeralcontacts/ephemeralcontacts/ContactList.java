@@ -78,6 +78,7 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
         // Crear un nuevo adaptador
         adapter_list = new AdapterList(this, this);
         list.setAdapter(adapter_list);
+        Manager.getInstancia().setObserverList((AdapterList)adapter_list);
 
         // --------------------
 

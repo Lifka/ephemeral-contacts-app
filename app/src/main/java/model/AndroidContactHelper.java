@@ -129,12 +129,19 @@ public class AndroidContactHelper {
 
 
     public int removeContact(Contact contact){
+
+        return removeContact(contact.getPhone());
+    }
+
+
+
+    public int removeContact(String phone){
         int result = -1;
 
-        /*************/Log.e("[-------DEBUG-------]", "AndroidContactHelper: removeContact: Eliminando el contacto " + contact.getName() + " de Android");
+        /*************/Log.e("[-------DEBUG-------]", "AndroidContactHelper: removeContact: Eliminando el contacto " + phone + " de Android");
 
         Uri contactUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
-                Uri.encode(contact.getPhone()));
+                Uri.encode(phone));
         Cursor cur = context.getContentResolver().query(contactUri, null, null,
                 null, null);
         try {
@@ -151,7 +158,7 @@ public class AndroidContactHelper {
             }
 
         } catch (Exception e) {
-            /*************/Log.e("[-------DEBUG-------]", "AndroidContactHelper: removeContact: El contacto " + contact.getName() + " no puede eliminarse de Android --> " + e.getMessage());
+            /*************/Log.e("[-------DEBUG-------]", "AndroidContactHelper: removeContact: El contacto " + phone + " no puede eliminarse de Android --> " + e.getMessage());
             result = -1;
         }
 

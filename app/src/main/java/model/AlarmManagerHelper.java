@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts.AlertExpirationActivity;
+import com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts.Receiver;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -35,13 +35,13 @@ public class AlarmManagerHelper {
     }
 
 
-    public void addCaducidad(long milisec, long phone, String name){
+    public void addCaducidad(long milisec, Contact contact){
 
 
         /*********** TIME ********************/
         /*****DEBUG*********///milisec = 10 * 1000;
         /*************/Log.d("[-------DEBUG-------]", "AlarmManagerHelper: addCaducidad: Añadiendo alerta de " + milisec + " milisegundos = "
-                + milisec / 1000 + " segundos = " + milisec / 1000 / 60 + " minutos para " + name);
+                + milisec / 1000 + " segundos = " + milisec / 1000 / 60 + " minutos para " + contact.getName());
 
         milisec = new GregorianCalendar().getTimeInMillis()+milisec;
 
@@ -54,14 +54,16 @@ public class AlarmManagerHelper {
 
 
         /*********** DATA ********************/
-        int iphone = (int) phone;
+        int iphone = Integer.valueOf(contact.getPhone());
         /*************/Log.d("[-------DEBUG-------]", "AlarmManagerHelper: ID --> " + iphone);
         /***********************************/
 
         /*********** INTENT ********************/
-        Intent intent = new Intent(context, AlertExpirationActivity.class);
-        intent.putExtra("NAME", name);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,
+        Intent intent = new Intent(context, Receiver.class);
+        intent.putExtra("TAG", contact.getTagString());
+        intent.putExtra("ID", contact.getId());
+        intent.putExtra("PHONE", contact.getPhone());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
                 iphone, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         /***********************************/
 

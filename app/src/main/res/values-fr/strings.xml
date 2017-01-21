@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Ephemeral Contacts</string>
     <string name="borrado">Contact supprimé</string>
     <string name="borrado_error">Erreur impossible à supprimer</string>
     <string name="error_guardar">Vous devez remplir tous les champs!</string>
@@ -20,4 +19,5 @@
     <string name="view_expiration_fecha">Date d\'expiration:</string>
     <string name="view_expiration">Expiration le jour(s):</string>
     <string name="toast_permission_denied">Ephemeral Contacts a besoin d\'accéder aux contacts pour pouvoir fonctionner correctement</string>
+    <string name="toast_caducado">Il y a des contacts qui viennent à expiration</string>
 </resources>

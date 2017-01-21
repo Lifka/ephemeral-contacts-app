@@ -16,6 +16,7 @@
     <string name="toast_guardado">Guardado correctamente</string>
     <string name="toast_error_guardado">Error, los cambios no se han podido guardar</string>
     <string name="toast_permission_denied">Ephemeral Contacts necesita acceso a los contactos para poder funcionar correctamente</string>
+    <string name="toast_caducado">Hay contactos que acaban de caducar</string>
 
     <string name="spinner_tag1">Todos</string>
 

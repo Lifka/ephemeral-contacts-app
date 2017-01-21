@@ -33,6 +33,7 @@ public class DateManager {
         cal.add(Calendar.DATE, days);
         String formattedDate = dateFormat.format(cal.getTime());
         return formattedDate;
+
     }
 
     public String getCurrentDate(){
@@ -58,13 +59,17 @@ public class DateManager {
 
     public boolean isExpired(String date){
         boolean result = false;
+        boolean expired = false;
 
         String date_c_str = getCurrentDate();
 
         try {
             Date curret_date = dateFormat.parse(date_c_str);
             Date expired_date = dateFormat.parse(date);
-            boolean expired = curret_date.after(expired_date);
+            if (curret_date.after(expired_date) ||
+                    curret_date.equals(expired_date)){
+                expired = true;
+            }
 
 
             /*************/Log.d("[-------DEBUG-------]", "DateManager: isExpired --> " + expired_date +
