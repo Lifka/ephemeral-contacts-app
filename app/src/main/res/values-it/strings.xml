@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ephemeral Contacts</string>
+    <string name="borrado">Contatto cancellato</string>
+    <string name="borrado_error">Errore, non si è potuto cancellare</string>
+    <string name="error_guardar">Devi riempire tutti i campi!</string>
+    <string name="menu_aniade">Aggiungere</string>
+    <string name="menu_edit">Modificare</string>
+    <string name="menu_borrar">Cancellare</string>
+    <string name="menu_seleccionado">selezionato</string>
+    <string name="menu_save">Salvare</string>
+    <string name="menu_seleccionados">selezionati</string>
+    <string name="menu_volver">Tornare senza salvare</string>
+    <string name="spinner_tag1">Tutti</string>
+    <string name="menu_volver_normal">Tornare</string>
+    <string name="toast_error_guardado">Errore, i cambiamenti non si sono potuti conservare</string>
+    <string name="toast_guardado">Salvato correttamente</string>
+    <string name="toast_permission_denied">Ephemeral Contacts ha bisogno di accesso ai contatti per potere funzionare correttamente</string>
+    <string name="view_expiration">Scadenza in giorni:</string>
+    <string name="view_expiration_fecha">Data di scadenza:</string>
+    <string name="view_name">Nome</string>
+    <string name="view_number">Numero di telefono</string>
+</resources>

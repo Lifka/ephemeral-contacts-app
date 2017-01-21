@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="borrado">Deleted contact</string>
+    <string name="borrado_error">Error, could not be deleted</string>
+    <string name="error_guardar">You have to fill all fields!</string>
+    <string name="menu_aniade">Add</string>
+    <string name="menu_borrar">Remove</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_save">Save</string>
+    <string name="menu_seleccionado">selected</string>
+    <string name="menu_seleccionados">selected</string>
+    <string name="menu_volver">Return without saving</string>
+    <string name="menu_volver_normal">Return</string>
+    <string name="spinner_tag1">All</string>
+    <string name="toast_error_guardado">Error, changes could not be saved</string>
+    <string name="toast_guardado">Saved successfully</string>
+    <string name="toast_permission_denied">Ephemeral Contacts needs access to the contacts in order to function correctly</string>
+    <string name="view_expiration">Expiry on day(s):</string>
+    <string name="view_expiration_fecha">Date of expiry:</string>
+    <string name="view_name">Name</string>
+    <string name="view_number">Phone number</string>
+</resources>

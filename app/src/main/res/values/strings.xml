@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">Ephemeral Contacts</string>
+    <string name="app_name" translatable="false">Ephemeral Contacts</string>
 
 
-    <string name="contact_list_title">Ephemeral Contacts</string>
-    <string name="tag_contacts">EC-</string>
-    <string name="separador_contacts">-</string>
+    <string name="contact_list_title" translatable="false">Ephemeral Contacts</string>
+    <string name="tag_contacts" translatable="false">EC-</string>
+    <string name="separador_contacts" translatable="false">-</string>
 
     <string name="menu_borrar">Borrar</string>
     <string name="menu_aniade">Añadir</string>
@@ -13,8 +13,6 @@
     <string name="menu_seleccionado">seleccionado</string>
     <string name="menu_seleccionados">seleccionados</string>
 
-
-    <string name="toast_manten_pulsado_info">Mantén pulsado un contacto para editarlo</string>
     <string name="toast_guardado">Guardado correctamente</string>
     <string name="toast_error_guardado">Error, los cambios no se han podido guardar</string>
     <string name="toast_permission_denied">Ephemeral Contacts necesita acceso a los contactos para poder funcionar correctamente</string>
@@ -29,7 +27,7 @@
 
     <string name="view_number">Número de teléfono</string>
     <string name="view_name">Nombre</string>
-    <string name="view_tag">#TAG</string>
+    <string name="view_tag" translatable="false">#TAG</string>
     <string name="view_expiration">Caducidad en día(s):</string>
     <string name="view_expiration_fecha">Fecha de caducidad:</string>
 
