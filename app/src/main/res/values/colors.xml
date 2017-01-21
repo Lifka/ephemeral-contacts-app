@@ -8,5 +8,6 @@
     <color name="colorGrey">#eae9e9</color>
     <color name="Transparent">#000277bd</color>
     <color name="SpinColor">#000000bd</color>
+    <color name="colorGreyDark">#6e6e6e</color>
 
 </resources>

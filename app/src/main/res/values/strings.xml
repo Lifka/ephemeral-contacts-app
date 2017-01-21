@@ -13,6 +13,7 @@
     <string name="toast_manten_pulsado_info">Mantén pulsado un contacto para editarlo</string>
     <string name="toast_guardado">Guardado correctamente</string>
     <string name="toast_error_guardado">Error, los cambios no se han podido guardar</string>
+    <string name="toast_permission_denied">Ephemeral Contacts necesita acceso a los contactos para poder funcionar correctamente</string>
 
     <string name="spinner_tag1">Todos</string>
 
@@ -30,4 +31,5 @@
 
     <string name="error_guardar">¡Tienes que rellenar todos los campos!</string>
     <string name="borrado">Contacto borrado</string>
+    <string name="borrado_error">Error, no se ha podido borrar</string>
 </resources>

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,16 +24,19 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ContactViewHol
     View.OnClickListener onclicklistener;
     View.OnLongClickListener onlonkclicklistener;
     private HashMap<Integer, Boolean> index_checked = new HashMap<>();
+    private boolean isTagList = false;
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder {
         private TextView name_contact;
         private TextView phone_contact;
+        private TextView tag_contact;
         private CheckBox checkbox;
 
         public ContactViewHolder(View v) {
             super(v);
             name_contact = (TextView) v.findViewById(R.id.name_contact);
             phone_contact = (TextView) v.findViewById(R.id.phone_contact);
+            tag_contact = (TextView) v.findViewById(R.id.tag);
             checkbox = (CheckBox) v.findViewById(R.id.checkbox);
         }
 
@@ -67,6 +71,19 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ContactViewHol
         public void setChecked(boolean checked){
             checkbox.setChecked(checked);
         }
+
+
+        public void setViewTagContact(String tag){
+            tag_contact.setText(tag);
+        }
+
+        public void hideTag(boolean b){
+            if (b) {
+                tag_contact.setVisibility(View.GONE);
+            } else {
+                tag_contact.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
 
@@ -93,6 +110,8 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ContactViewHol
     public void onBindViewHolder(ContactViewHolder holder, int position) {
         holder.setViewNameContact(Manager.getInstancia().getContacts().get(position).getName());
         holder.setViewPhoneContact((Manager.getInstancia().getContacts().get(position).getPhone()));
+        holder.setViewTagContact("#" + Manager.getInstancia().getContacts().get(position).getTagString());
+        holder.hideTag(isTagList);
         boolean checked = false;
 
         if (index_checked.containsKey(position)){
@@ -113,22 +132,37 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ContactViewHol
 
 
 
-    public void removeSelect(){
+    public int removeSelect(){
+
+        int result = -1;
 
         ArrayList<Contact> contacts = new ArrayList<>();
         /*************/Log.d("[-------DEBUG-------]", "AdapterList: removeSelect: total a borrar=" + index_checked.size());
 
         for (int i : index_checked.keySet()){
 
-            /*************/Log.d("[-------DEBUG-------]", "AdapterList: removeSelect: " + i);
+            /*************/Log.d("[-------DEBUG-------]", "AdapterList: removeSelect: borrando " +
+                    (Manager.getInstancia().getContacts().get(i).getName() + " id=" + (Manager.getInstancia().getContacts().get(i).getId())));
+            /*************/Log.d("[-------DEBUG-------]", "AdapterList: removeSelect: posición en la lista: " + i);
+
             contacts.add(Manager.getInstancia().getContacts().get(i));
             notifyItemRemoved(i);
         }
 
+
         index_checked.clear();
-        Manager.getInstancia().removeContacts(contacts);
+
+        result = Manager.getInstancia().removeContacts(contacts);
+
+
         /*************/Log.d("[-------DEBUG-------]", "AdapterList: removeSelect: deleted");
         notifyDataSetChanged();/***/
+
+        return result;
+    }
+
+    public void isTagList(boolean b){
+        isTagList = b;
     }
 
 }

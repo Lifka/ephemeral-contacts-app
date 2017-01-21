@@ -23,7 +23,7 @@
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/call"
-                android:src="@drawable/call"
+                android:src="@drawable/call2"
                 app:elevation="3dp"
                 app:borderWidth="0dp"
                 android:backgroundTint="@color/colorAccent"

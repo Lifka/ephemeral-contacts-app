@@ -55,6 +55,20 @@ public class Contact {
     }
 
     public int getId(){
+
+        if (id == -1){
+            /*************/Log.e("[-------DEBUG-------]", "Contact: error: se solicita id no asignada-");
+        }
+
         return id;
+    }
+
+    public String toString(){
+        return "ID=" + id +
+                " | tag=" + tag +
+                " | name=" + name +
+                " | phone=" + phone +
+                " | expiration=" + expiration +
+                " | days_expiration=" + days_expiration;
     }
 }

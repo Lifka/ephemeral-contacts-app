@@ -1,6 +1,7 @@
 package model;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -53,6 +54,49 @@ public class DateManager {
         }
 
         return days+1;
+    }
+
+    public boolean isExpired(String date){
+        boolean result = false;
+
+        String date_c_str = getCurrentDate();
+
+        try {
+            Date curret_date = dateFormat.parse(date_c_str);
+            Date expired_date = dateFormat.parse(date);
+            boolean expired = curret_date.after(expired_date);
+
+
+            /*************/Log.d("[-------DEBUG-------]", "DateManager: isExpired --> " + expired_date +
+                    "? | Hora del sistema --> " + curret_date + " | = " + expired);
+
+
+            result = expired;
+        } catch (Exception e) {
+
+            /*************/Log.e("[-------DEBUG-------]", "DateManager: isExpired EX: " +  e.getMessage());
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public long getMilisecondsTo(String date){
+        long result = -1;
+
+        try {
+            Date date1 = dateFormat.parse(getCurrentDate());
+            Date date2 = dateFormat.parse(date);
+            result = date2.getTime() - date1.getTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public long getSecondsTo(String date){
+        return getMilisecondsTo(date) / 1000;
     }
 
 

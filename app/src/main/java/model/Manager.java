@@ -1,16 +1,6 @@
 package model;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.ContentProviderOperation;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
-import android.provider.ContactsContract;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts.R;
@@ -39,10 +29,12 @@ public class Manager {
 
     public void setContext(Context c){
         this.context = c;
+        AndroidContactHelper.getInstancia().setContext(c);
     }
 
     public void load(Context c){
         setContext(c);
+        AlarmManagerHelper.getInstancia().setContext(context);
         DBManager.getInstancia().setContext(context);
         DBManager.getInstancia().open();
     }
@@ -62,18 +54,22 @@ public class Manager {
     }
 
     public void loadAll(){
+        /*************/Log.d("[-------DEBUG-------]", "---------------------loadAll-------------------");
         tag_saved = null;
         contacts.clear();
         contacts.addAll(DBManager.getInstancia().getContacts());
-        checkContacts();
+        AndroidContactHelper.getInstancia().checkContacts(contacts);
+        removeContactsExpired();
         /*************/Log.d("[-------DEBUG-------]", "Manager: Se han cargado " + contacts.size() + " contactos.");
     }
 
     public void loadByTag(Tag tag){
+        /*************/Log.d("[-------DEBUG-------]", "---------------------loadByTag-------------------");
         tag_saved = tag;
         contacts.clear();
         contacts.addAll(DBManager.getInstancia().getContacts(tag));
-        checkContacts();
+        AndroidContactHelper.getInstancia().checkContacts(contacts);
+        removeContactsExpired();
         /*************/Log.d("[-------DEBUG-------]", "Manager: Se han cargado " + contacts.size() + " contactos.");
     }
 
@@ -86,58 +82,81 @@ public class Manager {
     }
 
     public int addNewContact(Contact new_contact){
+        /*************/Log.d("[-------DEBUG-------]", "---------------------addNewContact-------------------");
         int result = 0;
-        result = saveOnMobile(new_contact);
+        result = AndroidContactHelper.getInstancia().saveContact(new_contact);
 
         if (result != -1) {
             result = (int)DBManager.getInstancia().insertContact(new_contact);
+            new_contact.setId(DBManager.getInstancia().getIDContact(new_contact));
         }
 
         if (result != -1){
+            AlarmManagerHelper.getInstancia().addCaducidad(DateManager.getInstancia().getMilisecondsTo(new_contact.getExpiration()),
+                    Long.valueOf(new_contact.getPhone()), new_contact.getName());
             contacts.add(new_contact);
         }
 
         return result;
     }
 
-    public void removeContacts(ArrayList<Contact> olds){
+    public int removeContacts(ArrayList<Contact> olds){
+        /*************/Log.d("[-------DEBUG-------]", "---------------------removeContacts-------------------");
+        int result = 0;
+
         for(int i = 0; i < olds.size(); i++){
-            removeContact(olds.get(i));
+            if (result != -1)
+                result = removeContact(olds.get(i));
         }
+
+        return result;
     }
 
-    public void removeContact(Contact old){
-        /*************/Log.d("[-------DEBUG-------]", "Manager: removeContact: borrando " + old.getName());
-        DBManager.getInstancia().removeContact(old);
+    public int removeContact(Contact old){
+        /*************/Log.d("[-------DEBUG-------]", "---------------------removeContact-------------------");
+        /*************/Log.d("[-------DEBUG-------]", "Manager: removeContact: borrando " + old.getName() + " id=" + old.getId());
 
-        contacts.remove(old);
 
-        removeContactFromMobile(old);
-        loadTags();
-        if (tag_saved != null){
-            loadByTag(tag_saved);
-        } else {
-            loadAll();
+        int result = 0;
+        AndroidContactHelper.getInstancia().removeContact(old); // Este error no se tiene en cuenta por seguridad
+
+        if (result != -1){
+            result = DBManager.getInstancia().removeContact(old);
         }
+
+        if (result != -1) {
+            contacts.remove(old);
+
+            loadTags();
+        }
+
+        return result;
     }
 
     public int contactsSize(){
         return contacts.size();
     }
 
-    public int editContact(Contact contact, Contact contact_changed){
+    public int editContact(Contact old, Contact contact_changed){
+        /*************/Log.d("[-------DEBUG-------]", "---------------------editContact-------------------");
         int result = 0;
-        result = (int)DBManager.getInstancia().updateContact(contact, contact_changed);
+        /*************/Log.d("[-------DEBUG-------]", "Manager: editContact: actualizando contacto " + old.getName() + " id=" + old.getId());
+        result = (int)DBManager.getInstancia().updateContact(old, contact_changed);
 
         if (result != -1) {
             boolean found = false;
             for (int i = 0; i < contactsSize() && !found; i++) {
-                if (contact.getName().equals(contacts.get(i).getName()) &&
-                        contact.getPhone() == contacts.get(i).getPhone()) {
+                if (old.getId() == contacts.get(i).getId()) {
+                    /*************/Log.d("[-------DEBUG-------]", "Manager: editContact: sustituyendo contacto " + contacts.get(i).getName() + " id=" + contacts.get(i).getId()
+                    + " i = " + i );
                     found = true;
                     contacts.set(i, contact_changed);
                 }
             }
+
+            AndroidContactHelper.getInstancia().removeContact(old);
+            result = AndroidContactHelper.getInstancia().saveContact(contact_changed);
+
         }
 
         return result;
@@ -151,96 +170,17 @@ public class Manager {
         tags.clear();
     }
 
-    private int saveOnMobile(Contact contact){
 
-
-
-        int result = 0;
-
-        ArrayList <ContentProviderOperation> datos = new ArrayList < ContentProviderOperation > ();
-
-        datos.add(ContentProviderOperation.newInsert(
-                ContactsContract.RawContacts.CONTENT_URI)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
-                .build());
-
-        //------------------------------------------------------ Nombre
-
-        String name = getNameForMobileContacts(contact);
-        datos.add(ContentProviderOperation.newInsert(
-                    ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                    .withValue(
-                            ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
-                            name).build());
-
-        //------------------------------------------------------ Móvil
-        datos.add(ContentProviderOperation.
-                    newInsert(ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, contact.getPhone())
-                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
-                            ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
-                    .build());
-
-
-        // Asking the Contact provider to create a new contact
-        try {
-            context.getContentResolver().applyBatch(ContactsContract.AUTHORITY, datos);
-        } catch (Exception e) {
-
-            /*************/Log.e("[-------DEBUG-------]", "Manager: error guardando contacto " + e.getMessage());
-            result = -1;
-
-
-        }
-
-        return result;
-
-    }
-
-    // Devuelve el nombre que tendrá en la agenda del móvil
-    private String getNameForMobileContacts(Contact contact){
-        return context.getResources().getString(R.string.tag_contacts) + contact.getName()  +
-                context.getResources().getString(R.string.separador_contacts) + contact.getTag().getTag();
-    }
-
-    // Comprueba si un contacto concreto sigue existiendo en la agenda del móvil
-    private boolean isContactAlive(Contact contact) {
-        boolean result = false;
-
-        Uri lookupUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(contact.getPhone()));
-        String[] mPhoneNumberProjection = { ContactsContract.PhoneLookup._ID, ContactsContract.PhoneLookup.NUMBER, ContactsContract.PhoneLookup.DISPLAY_NAME };
-        Cursor cur = context.getContentResolver().query(lookupUri, mPhoneNumberProjection, null, null, null);
-        try {
-            if (cur.moveToFirst()) {
-                result = true;
-            }
-        } finally {
-            if (cur != null)
-                cur.close();
-        }
-        return result;
-    }
-
-    // Repasa la colección de contactos de la app, y si alguno no existe ya en el móvil, lo borra de la app
-    // Para evitar contactos fantasma
-    private void checkContacts(){
-        for (int i = 0; i < contacts.size(); i++){
-            if (!isContactAlive(contacts.get(i))) {
-                /*************/Log.d("[-------DEBUG-------]", "Manager: checkContacts: El contacto " + contacts.get(i).getName() + " ya no existe en el móvil.");
+    public void removeContactsExpired(){
+        /*************/Log.d("[-------DEBUG-------]", "Manager: removeContactsExpired: Comprobando contactos caducaos...");
+        for(int i = 0; i < contacts.size(); i++){
+            if (DateManager.getInstancia().isExpired(contacts.get(i).getExpiration())){
+                /*************/Log.e("[-------DEBUG-------]", "Manager: removeContactsExpired: El contacto " + contacts.get(i).getName() + " ha caducado (posición=" + i + ")");
                 removeContact(contacts.get(i));
+                i--;
+            } else {
+                /*************/Log.d("[-------DEBUG-------]", "Manager: removeContactsExpired: El contacto " + contacts.get(i).getName() + " NO ha caducado --> " + contacts.get(i).getExpiration());
             }
         }
     }
-
-    private void removeContactFromMobile(Contact contact){
-
-    }
-
 }

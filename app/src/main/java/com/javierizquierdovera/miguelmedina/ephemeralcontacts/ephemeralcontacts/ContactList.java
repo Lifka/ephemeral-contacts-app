@@ -1,27 +1,34 @@
 package com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import model.Manager;
 import model.Tag;
 
-public class ContactList extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, View.OnLongClickListener{
+public class ContactList extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, View.OnLongClickListener, GestureDetector.OnGestureListener{
 
+    GestureDetector gd;
     private Spinner spinner_tags;
     private RecyclerView list;
     private RecyclerView.Adapter adapter_list;
@@ -33,7 +40,18 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contactlist);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.ic_icon_ec);
+
         setTitle(R.string.contact_list_title);
+
+        // Permisos
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS,
+                        Manifest.permission.CALL_PHONE},
+                1);
+
+
 
         spinner_tags = (Spinner)findViewById(R.id.menu_lista_spinner_tags);
 
@@ -58,6 +76,8 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
 
         // --------------------
 
+        // Swipe
+        gd = new GestureDetector(this, this);
 
 
     }
@@ -93,8 +113,10 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
         /*************/Log.d("[-------DEBUG-------]", "ContactList: Seleccionado Tag --> " + Manager.getInstancia().getTags().get(i));
 
         if (i == 0){
+            ((AdapterList)adapter_list).isTagList(false);
             Manager.getInstancia().loadAll();
         } else {
+            ((AdapterList)adapter_list).isTagList(true);
             Manager.getInstancia().loadByTag(Manager.getInstancia().getTags().get(i/* - 1*/));
         }
 
@@ -168,7 +190,13 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
             case R.id.menu_lista_borrar:
 
                 /*************/Log.d("[-------DEBUG-------]", "ContactList: Menu: deleting...");
-                ((AdapterList)adapter_list).removeSelect();
+
+                if (((AdapterList)adapter_list).removeSelect() != -1){
+                    Toast.makeText(this,R.string.borrado,Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this,R.string.borrado_error,Toast.LENGTH_SHORT).show();
+                }
+
                 return true;
         }
 
@@ -192,4 +220,64 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
         intent.setData(Uri.parse("tel:" + Manager.getInstancia().getContacts().get(index).getPhone()));
         startActivity(intent);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+
+                // If request is cancelled, the result arrays are empty.
+                // permission was granted, yay! Do the
+                // contacts-related task you need to do.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    // permission denied
+                    Toast.makeText(this, R.string.toast_permission_denied, Toast.LENGTH_LONG).show();
+                    finish();
+                }
+                return;
+            }
+
+        }
+    }
+
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        float sensibilidad = 50;
+
+        if (motionEvent.getX() - motionEvent1.getX() > sensibilidad){
+            editar(-1);
+        }
+
+
+        return true;
+    }
+
+
 }
