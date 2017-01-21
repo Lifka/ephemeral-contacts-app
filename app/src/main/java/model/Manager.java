@@ -19,6 +19,7 @@ public class Manager {
     private ArrayList<Tag> tags = new ArrayList<>();
     private Context context;
     private Tag tag_saved = null;
+    private int tag_saved_i = -1;
 
     private Manager(){
     }
@@ -182,5 +183,13 @@ public class Manager {
                 /*************/Log.d("[-------DEBUG-------]", "Manager: removeContactsExpired: El contacto " + contacts.get(i).getName() + " NO ha caducado --> " + contacts.get(i).getExpiration());
             }
         }
+    }
+
+    public int getTagSavedI(){
+        return tag_saved_i;
+    }
+
+    public void setTagSavedI(int i){
+        this.tag_saved_i = i;
     }
 }

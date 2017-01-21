@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -34,6 +36,9 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
     private RecyclerView.Adapter adapter_list;
     private RecyclerView.LayoutManager layout_manager_list;
     private FloatingActionButton add;
+    private MenuItem borrar_boton;
+
+    private boolean seleccionando = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +46,7 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
         setContentView(R.layout.contactlist);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.ic_icon_ec);
+        getSupportActionBar().setIcon(R.drawable.ic_icon3);
 
         setTitle(R.string.contact_list_title);
 
@@ -80,6 +85,7 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
         gd = new GestureDetector(this, this);
 
 
+
     }
 
 
@@ -89,6 +95,8 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
 
         Manager.getInstancia().load(this);
         Manager.getInstancia().loadTags();
+
+
 
         // Spinner -----------
         MenuItem item = menu.findItem(R.id.menu_lista_spinner_tags);
@@ -102,9 +110,40 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
         spinner_tags.setAdapter(adapter_spinner);
         //----------------------
 
+
+        int tag_saved = Manager.getInstancia().getTagSavedI();
+
+        if (tag_saved >= 0) {
+            spinner_tags.setSelection(tag_saved);
+        }
+
+        borrar_boton = menu.findItem(R.id.menu_lista_borrar);
+        borrar_boton.setVisible(false);
+
         return true;
     }
 
+    public void modoSeleccion(Boolean b){
+        if (b){ // Seleccionando...
+
+            if (((AdapterList)adapter_list).getIndexChecked().size() == 1) {
+                setTitle(((AdapterList) adapter_list).getIndexChecked().size() + " " + getResources().getString(R.string.menu_seleccionado));
+            } else {
+                setTitle(((AdapterList)adapter_list).getIndexChecked().size() + " " + getResources().getString(R.string.menu_seleccionados));
+            }
+
+            borrar_boton.setVisible(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(false);
+            seleccionando = true;
+
+        } else {
+            setTitle(R.string.contact_list_title);
+            ((AdapterList)adapter_list).getIndexChecked().clear();
+            borrar_boton.setVisible(false);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            seleccionando = false;
+        }
+    }
 
     // Spinner ------------------------------------------------------------------------
     @Override
@@ -115,10 +154,15 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
         if (i == 0){
             ((AdapterList)adapter_list).isTagList(false);
             Manager.getInstancia().loadAll();
+            Manager.getInstancia().setTagSavedI(-1);
         } else {
             ((AdapterList)adapter_list).isTagList(true);
-            Manager.getInstancia().loadByTag(Manager.getInstancia().getTags().get(i/* - 1*/));
+            Manager.getInstancia().loadByTag(Manager.getInstancia().getTags().get(i));
+            Manager.getInstancia().setTagSavedI(i);
         }
+
+
+        modoSeleccion(false);
 
         adapter_list.notifyDataSetChanged();
 
@@ -130,26 +174,36 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
     }
     // ---------------------------------------------------------------------------------
 
+    public void checkboxTask(int index, Boolean checked){
+
+
+        if (checked){
+            ((AdapterList)adapter_list).getIndexChecked().put(index, true);
+        } else {
+            ((AdapterList)adapter_list).getIndexChecked().remove(index);
+        }
+
+        if (((AdapterList)adapter_list).getIndexChecked().size() > 0){
+            modoSeleccion(true);
+        } else {
+            modoSeleccion(false);
+        }
+    }
 
     @Override
     public void onClick(View view) {
 
         int index;
+        CheckBox checkbox;
 
         switch (view.getId()){
             case R.id.checkbox:
                 index = (int)view.getTag();
+
                 /*************/Log.d("[-------DEBUG-------]", "ContactList: OnClick: Seleccionado " + index);
-                CheckBox checkbox = (CheckBox)view.findViewById(R.id.checkbox);
+                checkbox = (CheckBox)view.findViewById(R.id.checkbox);
 
-                boolean checked  = checkbox.isChecked();
-
-                if (checked){
-                    ((AdapterList)adapter_list).getIndexChecked().put(index, true);
-                } else {
-                    ((AdapterList)adapter_list).getIndexChecked().remove(index);
-                }
-
+                checkboxTask(index, checkbox.isChecked());
                 break;
             case R.id.add:
                 editar(-1);
@@ -157,8 +211,17 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
                 break;
             default:
                 index = list.getChildLayoutPosition(view);
+                /*************/Log.d("[-------DEBUG-------]", "ContactList: OnClick: Seleccionado " + index);
+                if (!seleccionando) {
+                    editar(index);
+                } else {
+                    checkbox = (CheckBox)view.findViewById(R.id.checkbox);
 
-                editar(index);
+                    boolean checked = !checkbox.isChecked();
+                    checkbox.setChecked(checked);
+
+                    checkboxTask(index, checked);
+                }
 
                 break;
         }
@@ -191,11 +254,17 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
 
                 /*************/Log.d("[-------DEBUG-------]", "ContactList: Menu: deleting...");
 
-                if (((AdapterList)adapter_list).removeSelect() != -1){
-                    Toast.makeText(this,R.string.borrado,Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this,R.string.borrado_error,Toast.LENGTH_SHORT).show();
+                if (((AdapterList)adapter_list).getIndexChecked().size() > 0) {
+                    if (((AdapterList) adapter_list).removeSelect() != -1) {
+                        Toast.makeText(this, R.string.borrado, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, R.string.borrado_error, Toast.LENGTH_SHORT).show();
+                    }
                 }
+
+
+                modoSeleccion(false);
+
 
                 return true;
         }

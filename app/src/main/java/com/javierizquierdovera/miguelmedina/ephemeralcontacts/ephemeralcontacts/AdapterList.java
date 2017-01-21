@@ -1,10 +1,14 @@
 package com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts;
 
+import android.content.Context;
+import android.support.v7.widget.ButtonBarLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +34,7 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ContactViewHol
         private TextView name_contact;
         private TextView phone_contact;
         private TextView tag_contact;
+        private CardView card_tag;
         private CheckBox checkbox;
 
         public ContactViewHolder(View v) {
@@ -38,6 +43,7 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ContactViewHol
             phone_contact = (TextView) v.findViewById(R.id.phone_contact);
             tag_contact = (TextView) v.findViewById(R.id.tag);
             checkbox = (CheckBox) v.findViewById(R.id.checkbox);
+            card_tag = (CardView) v.findViewById(R.id.card_tag);
         }
 
         public String getNameContact(){
@@ -80,8 +86,10 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ContactViewHol
         public void hideTag(boolean b){
             if (b) {
                 tag_contact.setVisibility(View.GONE);
+                card_tag.setVisibility(View.GONE);
             } else {
                 tag_contact.setVisibility(View.VISIBLE);
+                card_tag.setVisibility(View.VISIBLE);
             }
         }
     }
