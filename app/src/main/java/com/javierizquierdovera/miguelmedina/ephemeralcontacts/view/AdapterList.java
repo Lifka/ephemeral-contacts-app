@@ -1,21 +1,18 @@
-package com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts;
+package com.javierizquierdovera.miguelmedina.ephemeralcontacts.view;
 
-import android.content.Context;
-import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import controller.Fachada;
 import model.Contact;
 import model.Manager;
 
@@ -160,7 +157,7 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ContactViewHol
 
         index_checked.clear();
 
-        result = Manager.getInstancia().removeContacts(contacts);
+        result = Fachada.getInstancia().removeContacts(contacts);
 
 
         /*************/Log.d("[-------DEBUG-------]", "AdapterList: removeSelect: deleted");

@@ -1,7 +1,6 @@
-package com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts;
+package com.javierizquierdovera.miguelmedina.ephemeralcontacts.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;

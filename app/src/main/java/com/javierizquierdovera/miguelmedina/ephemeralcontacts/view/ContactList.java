@@ -1,4 +1,4 @@
-package com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts;
+package com.javierizquierdovera.miguelmedina.ephemeralcontacts.view;
 
 import android.Manifest;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,11 +19,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import controller.Fachada;
 import model.Manager;
 import model.Tag;
 
@@ -78,7 +77,7 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
         // Crear un nuevo adaptador
         adapter_list = new AdapterList(this, this);
         list.setAdapter(adapter_list);
-        Manager.getInstancia().setObserverList((AdapterList)adapter_list);
+        Fachada.getInstancia().setObserverList((AdapterList)adapter_list);
 
         // --------------------
 
@@ -94,8 +93,8 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
 
         getMenuInflater().inflate(R.menu.lista, menu);
 
-        Manager.getInstancia().load(this);
-        Manager.getInstancia().loadTags();
+        Fachada.getInstancia().load(this);
+        Fachada.getInstancia().loadTags();
 
 
 
@@ -112,7 +111,7 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
         //----------------------
 
 
-        int tag_saved = Manager.getInstancia().getTagSavedI();
+        int tag_saved = Fachada.getInstancia().getTagSavedI();
 
         if (tag_saved >= 0) {
             spinner_tags.setSelection(tag_saved);
@@ -154,12 +153,12 @@ public class ContactList extends AppCompatActivity implements AdapterView.OnItem
 
         if (i == 0){
             ((AdapterList)adapter_list).isTagList(false);
-            Manager.getInstancia().loadAll();
-            Manager.getInstancia().setTagSavedI(-1);
+            Fachada.getInstancia().loadAll();
+            Fachada.getInstancia().setTagSavedI(-1);
         } else {
             ((AdapterList)adapter_list).isTagList(true);
-            Manager.getInstancia().loadByTag(Manager.getInstancia().getTags().get(i));
-            Manager.getInstancia().setTagSavedI(i);
+            Fachada.getInstancia().loadByTag(Manager.getInstancia().getTags().get(i));
+            Fachada.getInstancia().setTagSavedI(i);
         }
 
 

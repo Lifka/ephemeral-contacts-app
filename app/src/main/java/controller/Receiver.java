@@ -1,4 +1,4 @@
-package com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts;
+package controller;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,13 +6,15 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.javierizquierdovera.miguelmedina.ephemeralcontacts.view.R;
+
 import java.util.ArrayList;
 
-import DB.DBManager;
-import model.AndroidContactHelper;
+import controller.Fachada;
+import model.DBManager;
+import controller.AndroidContactHelper;
 import model.Contact;
-import model.DateManager;
-import model.Manager;
+import controller.DateManager;
 
 /**
  * Created by lifka on 21/01/17.
@@ -43,16 +45,16 @@ public class Receiver extends BroadcastReceiver {
 
             for(int i = 0; i < contacts.size(); i++){
                 if (DateManager.getInstancia().isExpired(contacts.get(i).getExpiration())){
-                    /*************/Log.e("[-------DEBUG-------]", "Manager: removeContactsExpired: El contacto " + contacts.get(i).getName() + " ha caducado (posición=" + i + ")");
+                    /*************/Log.e("[-------DEBUG-------]", "Fachada: removeContactsExpired: El contacto " + contacts.get(i).getName() + " ha caducado (posición=" + i + ")");
                     DBManager.getInstancia().removeContact(contacts.get(i));
                     AndroidContactHelper.getInstancia().removeContact((contacts.get(i)));
                 } else {
-                    /*************/Log.d("[-------DEBUG-------]", "Manager: removeContactsExpired: El contacto " + contacts.get(i).getName() + " NO ha caducado --> " + contacts.get(i).getExpiration());
+                    /*************/Log.d("[-------DEBUG-------]", "Fachada: removeContactsExpired: El contacto " + contacts.get(i).getName() + " NO ha caducado --> " + contacts.get(i).getExpiration());
                 }
             }
 
         } else { // La app está abierta
-            Manager.getInstancia().removeContactsExpired();
+            Fachada.getInstancia().removeContactsExpired();
             Toast.makeText(context, R.string.toast_caducado, Toast.LENGTH_SHORT).show();
         }
 

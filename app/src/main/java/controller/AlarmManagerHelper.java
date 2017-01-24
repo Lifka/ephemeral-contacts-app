@@ -1,4 +1,4 @@
-package model;
+package controller;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -6,12 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts.Receiver;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import model.Contact;
 
 /**
  * Created by lifka on 19/01/17.

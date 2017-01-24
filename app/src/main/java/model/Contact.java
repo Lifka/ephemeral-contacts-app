@@ -2,7 +2,7 @@ package model;
 
 import android.util.Log;
 
-import java.util.Date;
+import model.Tag;
 
 /**
  * Created by lifka on 1/01/17.

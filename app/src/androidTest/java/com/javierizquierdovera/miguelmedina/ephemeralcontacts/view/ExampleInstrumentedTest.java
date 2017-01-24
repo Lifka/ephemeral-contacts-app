@@ -1,4 +1,4 @@
-package com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts;
+package com.javierizquierdovera.miguelmedina.ephemeralcontacts.view;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

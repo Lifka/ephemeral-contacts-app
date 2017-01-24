@@ -1,18 +1,17 @@
-package model;
+package controller;
 
 import android.content.ContentProviderOperation;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.util.Log;
 
-import com.javierizquierdovera.miguelmedina.ephemeralcontacts.ephemeralcontacts.R;
+import com.javierizquierdovera.miguelmedina.ephemeralcontacts.view.R;
 
 import java.util.ArrayList;
+
+import model.Contact;
 
 /**
  * Created by lifka on 18/01/17.
@@ -121,7 +120,7 @@ public class AndroidContactHelper {
             if (!isContactAlive(contacts.get(i))) {
                 /*************/Log.d("[-------DEBUG-------]", "AndroidContactHelper: checkContacts: El contacto " + contacts.get(i).getName() +
                         " ya no existe en Android --> id=" + contacts.get(i).getId() + " posición de la lista=" + i);
-               // Manager.getInstancia().removeContact(contacts.get(i));
+               // Fachada.getInstancia().removeContact(contacts.get(i));
                 saveContact(contacts.get(i));
             }
         }

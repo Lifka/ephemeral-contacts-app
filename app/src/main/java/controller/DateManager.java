@@ -1,11 +1,9 @@
-package model;
+package controller;
 
-import android.content.Context;
 import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -30,10 +28,13 @@ public class DateManager {
     public String getDateExpiration(int days){
 
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, days);
+       // cal.add(Calendar.DATE, days);
+       // String formattedDate = dateFormat.format(cal.getTime());
+        //return formattedDate;
+
+        cal.add(Calendar.MINUTE, 1);
         String formattedDate = dateFormat.format(cal.getTime());
         return formattedDate;
-
     }
 
     public String getCurrentDate(){
