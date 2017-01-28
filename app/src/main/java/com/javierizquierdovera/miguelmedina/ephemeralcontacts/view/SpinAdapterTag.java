@@ -15,6 +15,12 @@ import model.Tag;
  * Created by lifka on 2/01/17.
  */
 
+/*
+
+    This class adapt each tag to the spinner (dropdown of tags)
+
+ */
+
 public class SpinAdapterTag extends ArrayAdapter<Tag> {
 
     private Context context;

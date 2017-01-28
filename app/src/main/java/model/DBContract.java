@@ -5,7 +5,11 @@ import android.provider.BaseColumns;
 /**
  * Created by lifka on 30/12/16.
  */
+/*
 
+    This class save the names for create the DB
+
+ */
 public class DBContract implements BaseColumns {
     public static final String TABLE_NAME_CONTACTS = "contacts";
 

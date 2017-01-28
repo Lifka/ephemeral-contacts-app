@@ -10,7 +10,11 @@ import controller.AndroidContactHelper;
 /**
  * Created by lifka on 24/01/17.
  */
+/*
 
+    This class keep the information of the DB and make requests with DBManager
+
+ */
 public class Manager {
     private static Manager instance = new Manager();
     private Context context;

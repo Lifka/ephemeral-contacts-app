@@ -16,7 +16,11 @@ import model.Tag;
 /**
  * Created by lifka on 1/01/17.
  */
+/*
 
+    The view request modifications to the model with this class
+
+ */
 public class Fachada {
     private static Fachada instance = new Fachada();
 

@@ -19,7 +19,10 @@ import controller.DateManager;
 /**
  * Created by lifka on 21/01/17.
  */
+/*
 
+    This class receive ntifications from Android alarm
+ */
 public class Receiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {

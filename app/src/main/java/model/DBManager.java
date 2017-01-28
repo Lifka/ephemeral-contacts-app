@@ -11,7 +11,11 @@ import java.util.ArrayList;
 /**
  * Created by lifka on 30/12/16.
  */
+/*
 
+    This class make request to the DB
+
+ */
 public class DBManager {
     private SQLiteDatabase db;
     private DBHelper dbHelper;

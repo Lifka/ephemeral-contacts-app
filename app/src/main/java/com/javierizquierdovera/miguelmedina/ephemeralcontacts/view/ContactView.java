@@ -27,6 +27,12 @@ import model.Tag;
  * Created by lifka on 2/01/17.
  */
 
+/*
+
+    This class permit edit, view and create each contact
+
+ */
+
 public class ContactView extends AppCompatActivity implements View.OnClickListener, GestureDetector.OnGestureListener{
 
     GestureDetector gd;

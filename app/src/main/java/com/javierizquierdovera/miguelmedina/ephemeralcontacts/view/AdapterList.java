@@ -20,6 +20,12 @@ import model.Manager;
  * Created by lifka on 2/01/17.
  */
 
+/*
+
+    This class adapt each contact to the list view
+
+ */
+
 public class AdapterList extends RecyclerView.Adapter<AdapterList.ContactViewHolder>  {
 
     View.OnClickListener onclicklistener;

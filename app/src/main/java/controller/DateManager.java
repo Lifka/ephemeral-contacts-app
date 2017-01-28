@@ -11,7 +11,11 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by lifka on 3/01/17.
  */
+/*
 
+    This class make transforms and calculations with dates
+
+ */
 public class DateManager {
 
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -28,11 +32,7 @@ public class DateManager {
     public String getDateExpiration(int days){
 
         Calendar cal = Calendar.getInstance();
-       // cal.add(Calendar.DATE, days);
-       // String formattedDate = dateFormat.format(cal.getTime());
-        //return formattedDate;
-
-        cal.add(Calendar.MINUTE, 1);
+        cal.add(Calendar.DATE, days);
         String formattedDate = dateFormat.format(cal.getTime());
         return formattedDate;
     }

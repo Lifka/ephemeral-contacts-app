@@ -27,11 +27,17 @@ import controller.Fachada;
 import model.Manager;
 import model.Tag;
 
+/*
+
+    List of contacts, it uses AdapterList to format and crontroller each contact
+
+ */
+
 public class ContactList extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, View.OnLongClickListener, GestureDetector.OnGestureListener{
 
     GestureDetector gd;
     private Spinner spinner_tags;
-    private RecyclerView list;
+    private RecyclerView list; // Viewholder pattern
     private RecyclerView.Adapter adapter_list;
     private RecyclerView.LayoutManager layout_manager_list;
     private FloatingActionButton add;

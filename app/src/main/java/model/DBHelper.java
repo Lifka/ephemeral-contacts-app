@@ -8,7 +8,11 @@ import android.util.Log;
 /**
  * Created by lifka on 30/12/16.
  */
+/*
 
+    This class creates or upgrades the DB schema
+
+ */
 public class DBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DABABASE_NAME = "ephemeralcontacts.db";

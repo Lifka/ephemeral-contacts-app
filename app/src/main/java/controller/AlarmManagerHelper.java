@@ -17,6 +17,12 @@ import model.Contact;
  * Created by lifka on 19/01/17.
  */
 
+/*
+
+    This class use Android for create or remove alarms (for recieve notifies when one contact is out of time)
+
+ */
+
 public class AlarmManagerHelper {
 
     private static AlarmManagerHelper instance = new AlarmManagerHelper();

@@ -17,6 +17,12 @@ import model.Contact;
  * Created by lifka on 18/01/17.
  */
 
+/*
+
+    This class sends alerts to Android for add and remove contacts from the real list of contacts (We need it for you can use the contacts with WhatsApp, Telegram, etc)
+
+ */
+
 public class AndroidContactHelper {
 
     private static AndroidContactHelper instance = new AndroidContactHelper();
