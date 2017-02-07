@@ -1,7 +1,7 @@
 # EphemeralContactsApp
 ## AUTHORS 
-* Javier Izquierdo Vera
-* Miguel Medina Ballesteros
+* Javier Izquierdo Vera - http://javierizquierdovera.com
+* Miguel Medina Ballesteros - http://maximetinu.com
 
 ## NOTES
 Human Computer Interaction UNIFI Project (Cum laude) - Contacts with date of expiry
